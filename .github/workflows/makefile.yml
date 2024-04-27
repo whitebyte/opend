@@ -20,11 +20,11 @@ jobs:
     - name: Set upstream dmd to PATH
       run: source ~/dlang/dmd-2.108.0/activate
 
-    - name: Test
-      run: dmd --version
-
     - name: info
       run: echo $PATH
+
+    - name: Test
+      run: dmd --version
 
     - name: Make dmd
       env: 
