@@ -27,6 +27,7 @@ jobs:
       # env: 
         # HOST_DMD: ~/dlang/dmd-2.108.0/linux/bin64/dmd
       run: make dmd
+      working-directory: ~/work/opend/opend
 
     - name: Make druntime
       run: make druntime
