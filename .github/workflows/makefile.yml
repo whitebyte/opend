@@ -14,18 +14,21 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    # - name: Install upstream dmd
-    #   run: curl -fsS https://dlang.org/install.sh | bash -s dmd
+    - name: Install upstream dmd
+      run: curl -fsS https://dlang.org/install.sh | bash -s dmd
 
-    # - name: Set upstream dmd to PATH
-    #   run: source ~/dlang/dmd-2.108.0/activate
+    - name: Set upstream dmd to PATH
+      run: source ~/dlang/dmd-2.108.0/activate
 
     - name: Test
-      run: ls ~
+      run: dmd --version
+
+    - name: ls
+      run: ls
 
     - name: Make dmd
-      # env: 
-        # HOST_DMD: ~/dlang/dmd-2.108.0/linux/bin64/dmd
+      env: 
+        HOST_DMD: ~/dlang/dmd-2.108.0/linux/bin64/dmd
       run: make dmd
 
     - name: Make druntime
