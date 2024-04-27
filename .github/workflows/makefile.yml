@@ -21,6 +21,8 @@ jobs:
       run: source ~/dlang/dmd-2.108.0/activate
 
     - name: Make dmd
+      env: 
+        HOST_DMD: ~/dlang/dmd-2.108.0/linux/bin64/dmd
       run: make dmd
 
     - name: Make druntime
