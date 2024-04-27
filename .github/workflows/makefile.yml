@@ -22,7 +22,7 @@ jobs:
 
     - name: Make dmd
       env: 
-        AUTO_BOOTSTRAP: 1
+        HOST_DMD: ~/dlang/dmd-2.108.0/linux/bin64/dmd
       run: make dmd
 
     - name: Make druntime
