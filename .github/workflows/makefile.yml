@@ -17,6 +17,9 @@ jobs:
     - name: Install upstream dmd
       run: curl -fsS https://dlang.org/install.sh | bash -s dmd
 
+    - name: Set upstream dmd to PATH
+      run: source ~/dlang/dmd-2.108.0/activate
+
     - name: Make dmd
       run: make dmd
 
