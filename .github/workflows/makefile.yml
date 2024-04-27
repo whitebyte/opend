@@ -23,8 +23,8 @@ jobs:
     - name: Test
       run: dmd --version
 
-    - name: ls
-      run: ls
+    - name: info
+      run: echo $PATH
 
     - name: Make dmd
       env: 
