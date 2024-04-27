@@ -20,6 +20,9 @@ jobs:
     - name: Set upstream dmd to PATH
       run: source ~/dlang/dmd-2.108.0/activate
 
+    - name: Test
+      run: ls ~
+
     - name: Make dmd
       env: 
         HOST_DMD: ~/dlang/dmd-2.108.0/linux/bin64/dmd
