@@ -18,18 +18,7 @@ jobs:
       run: curl -fsS https://dlang.org/install.sh | bash -s dmd
 
     - name: Set upstream dmd to PATH
-      run: source ~/dlang/dmd-2.108.0/activate
-
-    - name: info
-      run: echo $PATH
-
-    - name: Test
-      run: dmd --version
-
-    - name: Make dmd
-      env: 
-        HOST_DMD: ~/dlang/dmd-2.108.0/linux/bin64/dmd
-      run: make dmd
-
-    - name: Make druntime
-      run: make druntime
+      run: |
+        source ~/dlang/dmd-2.108.0/activate
+        make dmd
+        make druntime
