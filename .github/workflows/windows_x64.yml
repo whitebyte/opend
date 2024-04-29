@@ -39,6 +39,11 @@ jobs:
       run: ${{ github.workspace }}\ci\build_deps\winmake-3.81\bin\make.exe
       shell: cmd
       working-directory: druntime
+
+    - name: Build phobos
+      run: ${{ github.workspace }}\ci\build_deps\winmake-3.81\bin\make.exe
+      shell: cmd
+      working-directory: phobos
     
     # - name: Make dmd executable
     #   run: chmod +x ./generated/linux/release/64/dmd
