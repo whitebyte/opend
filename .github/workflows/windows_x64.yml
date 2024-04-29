@@ -30,6 +30,8 @@ jobs:
       run: .\build.exe
       shell: powershell
       working-directory: compiler\src
+      env: 
+        HOST_DMD: ..\..\ci\build_deps\dmd.2.108.8\windows\bin64\dmd.exe
     
     # - name: Make dmd executable
     #   run: chmod +x ./generated/linux/release/64/dmd
