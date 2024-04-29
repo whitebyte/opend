@@ -13,9 +13,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-
-    # - name: Install upstream dmd
-    #   run: curl -fsS https://dlang.org/install.sh | bash -s dm
             
     - name: Build dmd build tool
       run: ${{ github.workspace }}\ci\build_deps\dmd.2.108.8\windows\bin64\dmd.exe build
@@ -41,6 +38,11 @@ jobs:
       run: ${{ github.workspace }}\ci\build_deps\winmake-3.81\bin\make.exe
       shell: cmd
       working-directory: phobos
+
+    - name: test
+      run: |
+        ls phobos
+        ls druntime
 
     - name: Create tarball
       run: tar -czf opend_windows_x64.tar.gz -C generated\windows\release\64 .
