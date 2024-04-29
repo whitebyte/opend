@@ -45,7 +45,7 @@ jobs:
         ls druntime
 
     - name: Create tarball
-      run: tar -czf opend_windows_x64.tar.gz -C generated\windows\release\64 phobos\
+      run: tar -czf opend_windows_x64.tar.gz -C generated\windows\release\64 . -C phobos\generated\windows\release\64 .
 
     - name: Pulbish artifact
       uses: actions/upload-artifact@v4
