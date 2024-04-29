@@ -15,10 +15,7 @@ jobs:
     - uses: actions/checkout@v4
 
     # - name: Install upstream dmd
-    #   run: curl -fsS https://dlang.org/install.sh | bash -s dmd
-
-    # - name: Enable Developer Command Prompt
-    #   uses: ilammy/msvc-dev-cmd@v1.13.
+    #   run: curl -fsS https://dlang.org/install.sh | bash -s dm
             
     - name: Build dmd build tool
       run: ${{ github.workspace }}\ci\build_deps\dmd.2.108.8\windows\bin64\dmd.exe build
@@ -34,6 +31,9 @@ jobs:
 
     - name: Setup Windows 10 SDK Action
       uses: GuillaumeFalourd/setup-windows10-sdk-action@v2
+
+    - name: Enable Developer Command Prompt
+      uses: ilammy/msvc-dev-cmd@v1.13.0
 
     - name: Build druntime
       run: ${{ github.workspace }}\ci\build_deps\winmake-3.81\bin\make.exe
