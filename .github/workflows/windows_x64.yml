@@ -17,11 +17,9 @@ jobs:
     # - name: Install upstream dmd
     #   run: curl -fsS https://dlang.org/install.sh | bash -s dmd
 
-    - name: Set up Visual Studio environment
-      run: |
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
-      shell: cmd
-
+    - name: Enable Developer Command Prompt
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+            
     - name: Build dmd build tool
       run: ${{ github.workspace }}\ci\build_deps\dmd.2.108.8\windows\bin64\dmd.exe build
       shell: powershell
