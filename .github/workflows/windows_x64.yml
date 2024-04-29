@@ -19,7 +19,7 @@ jobs:
 
     - name: Build dmd
       run: dmd build
-      working-directory: compile/src
+      working-directory: compiler\src
     
     # - name: Make dmd executable
     #   run: chmod +x ./generated/linux/release/64/dmd
