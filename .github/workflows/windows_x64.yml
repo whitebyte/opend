@@ -41,18 +41,15 @@ jobs:
       run: ${{ github.workspace }}\ci\build_deps\winmake-3.81\bin\make.exe
       shell: cmd
       working-directory: phobos
-    
-    # - name: Make dmd executable
-    #   run: chmod +x ./generated/linux/release/64/dmd
 
     - name: Create tarball
       run: tar -czf opend_windows_x64.tar.gz -C generated\windows\release\64 .
 
-    - name: Archive production artifacts
+    - name: Pulbish artifact
       uses: actions/upload-artifact@v4
       with:
-          name: opend_windows_x64.tar.gz
-          path: opend_windows_x64.tar.gz
+          name: opend_windows_x64
+          path: generated\windows\release\64
             
     # - name: Create Release
     #   uses: ncipollo/release-action@v1.14.0
