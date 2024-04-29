@@ -41,11 +41,11 @@ jobs:
 
     - name: test
       run: |
-        ls phobos
+        ls phobos/generated/
         ls druntime
 
     - name: Create tarball
-      run: tar -czf opend_windows_x64.tar.gz -C generated\windows\release\64 .
+      run: tar -czf opend_windows_x64.tar.gz -C generated\windows\release\64 phobos\
 
     - name: Pulbish artifact
       uses: actions/upload-artifact@v4
