@@ -17,8 +17,13 @@ jobs:
     # - name: Install upstream dmd
     #   run: curl -fsS https://dlang.org/install.sh | bash -s dmd
 
+    - name: Test
+      run: ls
+      shell: powershell
+
     - name: Build dmd
-      run: dmd build
+      run: ..\..\ci\build_deps\dmd.2.108.8\windows\bin64\dmd.exe build
+      shell: powershell
       working-directory: compiler\src
     
     # - name: Make dmd executable
