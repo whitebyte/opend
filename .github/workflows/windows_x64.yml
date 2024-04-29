@@ -29,8 +29,8 @@ jobs:
       env: 
         HOST_DMD: ${{ github.workspace }}\ci\build_deps\dmd.2.108.8\windows\bin64\dmd.exe
 
-    - name: Setup Windows 10 SDK Action
-      uses: GuillaumeFalourd/setup-windows10-sdk-action@v2
+    # - name: Setup Windows 10 SDK Action
+    #   uses: GuillaumeFalourd/setup-windows10-sdk-action@v2
 
     - name: Enable Developer Command Prompt
       uses: ilammy/msvc-dev-cmd@v1.13.0
