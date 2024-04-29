@@ -21,17 +21,22 @@ jobs:
       run: ls
       shell: powershell
 
-    - name: Build dmd
+    - name: Build dmd build tool
       run: ..\..\ci\build_deps\dmd.2.108.8\windows\bin64\dmd.exe build
       shell: powershell
       working-directory: compiler\src
 
-    - name: Build
+    - name: Build odmd compiler
       run: .\build.exe
       shell: powershell
       working-directory: compiler\src
       env: 
         HOST_DMD: ..\..\ci\build_deps\dmd.2.108.8\windows\bin64\dmd.exe
+
+    - name: Build druntime
+      run: ..\..\ci\build_deps\winmake-3.81\bin\make.exe
+      shell: powershell
+      working-directory: druntime
     
     # - name: Make dmd executable
     #   run: chmod +x ./generated/linux/release/64/dmd
