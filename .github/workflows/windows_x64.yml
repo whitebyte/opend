@@ -1,0 +1,42 @@
+name: Build Widows x64
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    # - name: Install upstream dmd
+    #   run: curl -fsS https://dlang.org/install.sh | bash -s dmd
+
+    - name: Build dmd
+      run: dmd build
+      working-directory: compile/src
+    
+    # - name: Make dmd executable
+    #   run: chmod +x ./generated/linux/release/64/dmd
+
+    # - name: Create tarball
+    #   run: tar -czf opend_linux_x64.tar.gz -C generated/linux/release/64 .
+
+    # - name: Archive production artifacts
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #       name: opend_windows_x64.tar.gz
+    #       path: opend_windows_x64.tar.gz
+            
+    # - name: Create Release
+    #   uses: ncipollo/release-action@v1.14.0
+    #   with:
+    #     tag: Nightly
+    #     artifacts: opend_windows_x64.tar.gz
+            
+      
