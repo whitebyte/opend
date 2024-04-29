@@ -17,9 +17,10 @@ jobs:
     # - name: Install upstream dmd
     #   run: curl -fsS https://dlang.org/install.sh | bash -s dmd
 
-    - name: Test
-      run: ls
-      shell: powershell
+    - name: Set up Visual Studio environment
+      run: |
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
+      shell: cmd
 
     - name: Build dmd build tool
       run: ${{ github.workspace }}\ci\build_deps\dmd.2.108.8\windows\bin64\dmd.exe build
@@ -35,7 +36,7 @@ jobs:
 
     - name: Build druntime
       run: ${{ github.workspace }}\ci\build_deps\winmake-3.81\bin\make.exe
-      shell: powershell
+      shell: cmd
       working-directory: druntime
     
     # - name: Make dmd executable
