@@ -27,7 +27,7 @@ jobs:
       working-directory: compiler\src
 
     - name: Build
-      run: build
+      run: .\build.exe
       shell: powershell
       working-directory: compiler\src
     
