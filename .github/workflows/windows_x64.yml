@@ -25,6 +25,11 @@ jobs:
       run: ..\..\ci\build_deps\dmd.2.108.8\windows\bin64\dmd.exe build
       shell: powershell
       working-directory: compiler\src
+
+    - name: Build
+      run: build
+      shell: powershell
+      working-directory: compiler\src
     
     # - name: Make dmd executable
     #   run: chmod +x ./generated/linux/release/64/dmd
