@@ -3,16 +3,12 @@ runs:
   using: composite
   steps:
 
-    - name: Download x86_64 artifact
-      uses: actions/download-artifact@v3
+    - name: Download x86_64 and arm64 artifacts
+      uses: actions/download-artifact@v4
       with:
-        name: osx-x86_64
+        pattern: osx-*
         path: artifacts/
-    - name: Download arm64 artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: osx-arm64
-        path: artifacts/
+        merge-multiple: true # place all files into artifacts/ directly
 
     - name: Extract & merge artifacts
       shell: bash
@@ -37,11 +33,8 @@ runs:
           lipo -create -output $exe ../ldc2-x86_64/$exe ../ldc2-arm64/$exe
         done
 
-        ios_triple_suffix=$(grep -o -E '\-apple-ios[0-9\.]+' etc/ldc2.conf | head -n1)
-        ios_version=${ios_triple_suffix:10}
-
         # ldc2.conf: replace the default section and add extra sections
-        # note: arm64-apple-ios section already exists
+        # note: x86_64-apple-ios section already exists
         sections="
         default:
         {
@@ -61,11 +54,6 @@ runs:
 
         \"x86_64-apple-\":
         {
-            switches = [
-                \"-defaultlib=phobos2-ldc,druntime-ldc\",
-                \"-Xcc=-target\",
-                \"-Xcc=x86_64-apple-macos\",
-            ];
             lib-dirs = [
                 \"%%ldcbinarypath%%/../lib-x86_64\",
             ];
@@ -74,11 +62,6 @@ runs:
 
         \"arm64-apple-\":
         {
-            switches = [
-                \"-defaultlib=phobos2-ldc,druntime-ldc\",
-                \"-Xcc=-target\",
-                \"-Xcc=arm64-apple-macos\",
-            ];
             lib-dirs = [
                 \"%%ldcbinarypath%%/../lib-arm64\",
             ];
@@ -89,9 +72,6 @@ runs:
         {
             switches = [
                 \"-defaultlib=phobos2-ldc,druntime-ldc\",
-                \"-Xcc=-target\",
-                \"-Xcc=arm64-apple-ios$ios_version\",
-                \"-Xcc=-miphoneos-version-min=$ios_version\",
                 \"-Xcc=-isysroot\",
                 \"-Xcc=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk\",
             ];
@@ -109,12 +89,9 @@ runs:
       run: |
         set -eux
         echo 'void main() { import std.stdio; writefln("Hello world, %d bits", size_t.sizeof * 8); }' > hello.d
-        for os in macos ios; do
-          for arch in x86_64 arm64; do
-            triple="$arch-apple-$os"
-            ldc2-universal/bin/ldc2 -mtriple="$triple" hello.d
-            ldc2-universal/bin/ldc2 -mtriple="$triple" hello.d -link-defaultlib-shared
-          done
+        for triple in x86_64-apple-macos11.0 arm64-apple-macos11.0 x86_64-apple-ios12.0-simulator arm64-apple-ios12.0; do
+          ldc2-universal/bin/ldc2 -mtriple="$triple" hello.d
+          ldc2-universal/bin/ldc2 -mtriple="$triple" hello.d -link-defaultlib-shared
         done
 
     - name: Pack universal package
@@ -138,7 +115,8 @@ runs:
         tar -cf - $artifactName | 7za a newArtifacts/$artifactName.tar.xz -si -txz -mx9
 
     - name: Upload universal package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: osx-universal
         path: newArtifacts/
+        compression-level: 0

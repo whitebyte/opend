@@ -994,7 +994,18 @@ Statement statementSemanticVisit(Statement s, Scope* sc)
                          (tn.ty != tv.ty && tn.ty.isSomeChar && tv.ty.isSomeChar)) &&
                         !Type.tsize_t.implicitConvTo(tindex))
                     {
-                        deprecation(fs.loc, "foreach: loop index implicitly converted from `size_t` to `%s`",
+                        bool err = true;
+                        if (tab.isTypeDArray())
+                        {
+                            // check if overflow is possible
+                            const maxLen = IntRange.fromType(tindex).imax.value + 1;
+                            if (auto ale = fs.aggr.isArrayLiteralExp())
+                                err = ale.elements.length > maxLen;
+                            else if (auto se = fs.aggr.isSliceExp())
+                                err = !(se.upr && se.upr.isConst() && se.upr.toInteger() <= maxLen);
+                        }
+                        if (err)
+                            deprecation(fs.loc, "foreach: loop index implicitly converted from `size_t` to `%s`",
                                        tindex.toChars());
                     }
                 }
@@ -1881,7 +1892,17 @@ Statement statementSemanticVisit(Statement s, Scope* sc)
                 error(ps.loc, "`pragma(%s)` is missing a terminating `;`", ps.ident.toChars());
                 return setError();
             }
-            ps._body = ps._body.statementSemantic(sc);
+            if (ps.ident == Id.explicit_gc)
+            {
+                sc = sc.push();
+                sc.explicit_gc = evalPragmaExplicitGc(ps.loc, sc, ps.args);
+                ps._body = ps._body.statementSemantic(sc);
+                sc = sc.pop();
+            }
+            else
+            {
+                ps._body = ps._body.statementSemantic(sc);
+            }
         }
         result = ps._body;
     }
@@ -2584,6 +2605,8 @@ version (IN_LLVM)
          */
 
         //printf("ReturnStatement.dsymbolSemantic() %p, %s\n", rs, rs.toChars());
+
+        rs.explicit_gc = sc.explicit_gc;
 
         FuncDeclaration fd = sc.parent.isFuncDeclaration();
         if (fd.fes)
