@@ -85,7 +85,7 @@ jobs:
        with:
          name: opend_linux_x64
 
-      - name: Pulbish artifact
+    - name: Pulbish artifact
       uses: actions/upload-artifact@v4
       with:
           name: opend_linux_x64
