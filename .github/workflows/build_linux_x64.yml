@@ -7,10 +7,8 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
-
+  build-linux64:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
 
@@ -39,6 +37,59 @@ jobs:
       uses: ncipollo/release-action@v1.14.0
       with:
         tag: Nightly
-        artifacts: opend_linux_x64.tar.gz
+        artifacts: |
+          opend_linux_x64.tar.gz
+          opend_windows_x64.tar.gz
             
       
+  build-win64:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+            
+    - name: Build dmd build tool
+      run: ${{ github.workspace }}\ci\build_deps\dmd.2.108.8\windows\bin64\dmd.exe build
+      shell: powershell
+      working-directory: compiler\src
+
+    - name: Build odmd compiler
+      run: .\build.exe
+      shell: powershell
+      working-directory: compiler\src
+      env: 
+        HOST_DMD: ${{ github.workspace }}\ci\build_deps\dmd.2.108.8\windows\bin64\dmd.exe
+
+    - name: Enable developer command prompt # required to build druntime
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
+    - name: Build druntime
+      run: ${{ github.workspace }}\ci\build_deps\winmake-3.81\bin\make.exe
+      shell: cmd
+      working-directory: druntime
+
+    - name: Build phobos
+      run: ${{ github.workspace }}\ci\build_deps\winmake-3.81\bin\make.exe
+      shell: cmd
+      working-directory: phobos
+
+    - name: Create tarball
+      run: tar -czf --verbose opend_windows_x64.tar.gz -C ${{ github.workspace }}\generated\windows\release\64 . -C ${{ github.workspace }}\phobos\generated\windows\release\64 .
+
+
+  
+  release:
+    runs-on: ubuntu-latest
+    steps:
+     - name: Download artifact
+     - uses: actions/download-artifact@v4
+       with:
+         name: opend_linux_x64
+
+      - name: Pulbish artifact
+      uses: actions/upload-artifact@v4
+      with:
+          name: opend_linux_x64
+          path: opend_linux_x64
+         
+       
+  
