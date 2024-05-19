@@ -43,15 +43,16 @@ jobs:
       run: |
         ls ${{ github.workspace }}\phobos\generated\windows\release\64
 
-    - name: Create tarball
-      run: tar -czf --verbose opend_windows_x64.tar.gz -C ${{ github.workspace }}\generated\windows\release\64 . -C ${{ github.workspace }}\phobos\generated\windows\release\64 .
+    # - name: Create tarball
+    #  run: tar -czf --verbose opend_windows_x64.tar.gz -C ${{ github.workspace }}\generated\windows\release\64 . -C ${{ github.workspace }}\phobos\generated\windows\release\64 .
 
     - name: Pulbish artifact
       uses: actions/upload-artifact@v4
       with:
           name: opend_windows_x64
-          path: generated\windows\release\64
-            
+          path: |
+            ${{ github.workspace }}\generated\windows\release\64
+            ${{ github.workspace }}\phobos\generated\windows\release\64
     # - name: Create Release
     #   uses: ncipollo/release-action@v1.14.0
     #   with:
