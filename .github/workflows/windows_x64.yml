@@ -41,12 +41,11 @@ jobs:
 
     - name: test
       run: |
-        ls ${{ github.workspace }}
         ls ${{ github.workspace }}\phobos\generated\windows
         ls ${{ github.workspace }}\druntime
 
     - name: Create tarball
-      run: tar -czf --verbose opend_windows_x64.tar.gz -C ${{ github.workspace }}\generated\windows\release\64 . -C ${{ github.workspace }}\phobos\generated\windows .
+      run: tar -czf --verbose opend_windows_x64.tar.gz -C ${{ github.workspace }}\generated\windows\release\64 . -C ${{ github.workspace }}\phobos\generated\windows\release\64 .
 
     - name: Pulbish artifact
       uses: actions/upload-artifact@v4
