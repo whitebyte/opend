@@ -32,15 +32,12 @@ jobs:
       with:
           name: opend_linux_x64.tar.gz
           path: opend_linux_x64.tar.gz
-            
-    - name: Create Release
-      uses: ncipollo/release-action@v1.14.0
+    
+    - name: Pulbish artifact
+      uses: actions/upload-artifact@v4
       with:
-        tag: Nightly
-        artifacts: |
-          opend_linux_x64.tar.gz
-          opend_windows_x64.tar.gz
-            
+        name: opend_linux_x64
+        path: opend_linux_x64    
       
   build-win64:
     runs-on: windows-latest
